@@ -2,12 +2,13 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-var config = requiere('./config/config')
+var config = require('./config/config');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -27,11 +28,11 @@ app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressSession({secret: config.secret}));
+app.use(expressSession({secret: config.secret, resave: false, saveUninitialized: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var User = require('./models/user');
+var User = require('./models/User');
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
