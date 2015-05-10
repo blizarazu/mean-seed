@@ -1,8 +1,5 @@
 var express = require('express');
 
-
-var passport = require('passport');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -14,11 +11,7 @@ require('./config/express')(app, config)
 
 require('./config/mongoose')(config);
 
-var User = require('./models/User');
-passport.use(User.createStrategy());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+require('./config/passport')();
 
 app.use('/', routes);
 app.use('/users', users);
