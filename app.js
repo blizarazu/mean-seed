@@ -1,6 +1,6 @@
 var express = require('express');
 
-var mongoose = require('mongoose');
+
 var passport = require('passport');
 
 var routes = require('./routes/index');
@@ -12,19 +12,13 @@ var config = require('./config/config');
 
 require('./config/express')(app, config)
 
+require('./config/mongoose')(config);
+
 var User = require('./models/User');
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-mongoose.connect(config.db, function(err) {
-    if(err) {
-        console.log('db connection error', err);
-    } else {
-        console.log('db connection successful');
-    }
-});
 
 app.use('/', routes);
 app.use('/users', users);
